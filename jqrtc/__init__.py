@@ -11,7 +11,7 @@ Author: Ported from MATLAB code by wjxjmj
 Original MATLAB License: GPL
 """
 
-__version__ = '0.1.0'
+__version__ = "0.1.0"
 
 # Import key components for easier access
 from .kinematics import quadrotor_kinematics
