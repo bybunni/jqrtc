@@ -198,7 +198,7 @@ def plot_motor_speeds(omega_history, dt):
     
     return fig
 
-def display_simulation(position_history, omega_history, dt, tail_length=-1, speed=200):
+def display_simulation(position_history, omega_history, dt, tail_length=-1, speed=200, save_file=None):
     """
     Display the complete simulation results.
     
@@ -214,6 +214,8 @@ def display_simulation(position_history, omega_history, dt, tail_length=-1, spee
         Length of the trajectory tail to display. If -1, show the full trajectory.
     speed : int, optional
         Animation speed (number of frames to display)
+    save_file : str, optional
+        File to save the figures to. If None, show the plots.
     """
     # Plot trajectory
     fig1, ani = plot_trajectory(position_history, dt, tail_length, speed)
@@ -225,5 +227,9 @@ def display_simulation(position_history, omega_history, dt, tail_length=-1, spee
     plt.figure(fig2.number)
     plt.title('Motor Speeds')
     
-    # Show plots
-    plt.show()
+    # Save or show the plots
+    if save_file is not None:
+        ani.save(f'{save_file}_trajectory.mp4')
+        fig2.savefig(f'{save_file}_motor_speeds.png')
+    else:
+        plt.show()

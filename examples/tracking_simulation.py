@@ -7,15 +7,14 @@ the quadrotor tracking control simulation.
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
 import sys
 import os
 
 # Add parent directory to path to import from quadrotor package
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from quadrotor.simulator import Simulator
-from quadrotor.visualization import display_simulation
+from jqrtc.simulator import Simulator
+from jqrtc.visualization import display_simulation
 
 def main():
     """Run the quadrotor tracking simulation."""
@@ -48,9 +47,11 @@ def main():
     )
     
     print("Simulation complete. Displaying results...")
-    
+    print(position_history.shape)
+    print(omega_history.shape)
+
     # Display results
-    display_simulation(position_history, omega_history, dt, tail_length=-1, speed=200)
+    display_simulation(position_history, omega_history, dt, tail_length=-1, speed=200, save_file='tracking_simulation')
     
 if __name__ == "__main__":
     main()

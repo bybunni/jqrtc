@@ -4,3 +4,6 @@
 # Python egg info
 *.egg-info
 
+# Python
+*.pyc
+__pycache__
