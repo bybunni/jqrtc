@@ -36,7 +36,14 @@ jqrtc/                                # Repository root
 ├── docs/                             # Documentation
 │   ├── numpy-port.md                 # NumPy port documentation
 │   └── jax-port.md                   # JAX port documentation
-└── tests/                  # Unit tests (future implementation)
+└── tests/                            # Unit testing
+    ├── conftest.py                   # Pytest fixtures
+    ├── test_utils.py                 # Tests for utility functions
+    ├── test_kinematics.py            # Tests for quadrotor dynamics
+    ├── test_controller.py            # Tests for tracking controllers
+    ├── test_simulator.py             # Tests for simulators
+    ├── test_factory.py               # Tests for factory pattern
+    └── test_integration.py           # End-to-end integration tests
 ```
 
 ## Installation
@@ -54,8 +61,8 @@ cd jqrtc
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-# Install in development mode
-pip install -e .
+# Install in development mode with testing dependencies
+pip install -e ".[test]"
 ```
 
 ### Option 2: Install using pip
@@ -104,6 +111,29 @@ position_history, omega_history = simulator.run_simulation(
 # Visualize the results
 display_simulation(position_history, omega_history, dt=0.01)
 ```
+
+## Testing
+
+The project includes a comprehensive test suite to validate both NumPy and JAX implementations. The tests ensure that both implementations produce consistent results and verify the performance benefits of the JAX implementation.
+
+```bash
+# Run all tests
+python -m pytest
+
+# Run specific test files
+python -m pytest tests/test_utils.py
+
+# Run tests with verbose output
+python -m pytest -v
+
+# Run tests with coverage report
+python -m pytest --cov=jqrtc
+```
+
+The test suite includes:
+- Unit tests for utility functions, kinematics, controllers, and simulators
+- Integration tests for end-to-end validation
+- Performance comparison tests
 
 ## JAX Implementation
 
