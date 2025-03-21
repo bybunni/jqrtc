@@ -15,16 +15,27 @@ This package provides tools for simulating quadrotor dynamics and implementing t
 ## Repository Structure
 
 ```
-jqrtc/                      # Repository root
-├── jqrtc/                  # Python package
-│   ├── kinematics.py       # Quadrotor dynamics
-│   ├── controller.py       # Tracking controller
-│   ├── simulator.py        # Simulation engine
-│   ├── utils.py            # Utility functions
-│   └── visualization.py    # Plotting and animation
-├── matlab/                 # Original MATLAB code
-├── examples/               # Example scripts
-├── docs/                   # Documentation
+jqrtc/                                # Repository root
+├── jqrtc/                            # Python package
+│   ├── kinematics.py                 # NumPy-based quadrotor dynamics
+│   ├── controller.py                 # NumPy-based tracking controller
+│   ├── simulator.py                  # NumPy-based simulation engine
+│   ├── utils.py                      # Utility functions
+│   ├── visualization.py              # Plotting and animation
+│   ├── jax_kinematics.py             # JAX-based quadrotor dynamics
+│   ├── jax_controller.py             # JAX-based tracking controller
+│   ├── jax_simulator.py              # JAX-based simulation with vmap
+│   ├── jax_utils.py                  # JAX utility functions
+│   ├── jax_visualization.py          # JAX visualization tools
+│   └── factory.py                    # Factory pattern for implementations
+├── matlab/                           # Original MATLAB code
+├── examples/                         # Example scripts
+│   ├── tracking_simulation.py        # NumPy implementation example
+│   ├── jax_tracking_simulation.py    # JAX implementation example
+│   └── implementation_comparison.py  # Performance comparison
+├── docs/                             # Documentation
+│   ├── numpy-port.md                 # NumPy port documentation
+│   └── jax-port.md                   # JAX port documentation
 └── tests/                  # Unit tests (future implementation)
 ```
 
