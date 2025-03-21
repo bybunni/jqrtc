@@ -94,6 +94,35 @@ position_history, omega_history = simulator.run_simulation(
 display_simulation(position_history, omega_history, dt=0.01)
 ```
 
+## JAX Implementation
+
+The project also includes a JAX-based implementation that enables efficient parallel simulation of multiple quadrotors. The JAX implementation includes:
+
+- `jax_utils.py`: JAX-based utility functions
+- `jax_kinematics.py`: Vectorized quadrotor dynamics
+- `jax_controller.py`: Tracking controller with JAX support
+- `jax_simulator.py`: Simulator with parallel computation capabilities
+- `jax_visualization.py`: Visualization tools for JAX arrays
+- `factory.py`: Factory pattern for easily switching between NumPy and JAX implementations
+
+### Performance Comparison
+
+#### Single Quadrotor Performance
+
+| Implementation | Time (seconds) | Steps per Second | Speedup |
+|----------------|-----------------|------------------|----------|
+| NumPy | 0.4177 | 4,787.61 | 1.00x |
+| JAX | 0.0095 | 210,182.86 | 43.90x |
+
+#### JAX Scaling with Multiple Quadrotors
+
+| Quadrotors | Time (seconds) | Steps per Second | Quadrotor Steps per Second |
+|------------|----------------|------------------|----------------------------|
+| 1 | 0.0110 | 181,673.84 | 181,673.84 |
+| 10 | 0.0042 | 471,376.04 | 4,713,760.40 |
+| 100 | 0.0027 | 745,521.51 | 74,552,150.73 |
+| 1,000 | 0.0028 | 709,936.36 | 709,936,357.48 |
+
 ## Original MATLAB Implementation
 
 The original MATLAB implementation is preserved in the `matlab/` directory. It includes:
@@ -106,7 +135,9 @@ The original MATLAB implementation is preserved in the `matlab/` directory. It i
 
 ## Documentation
 
-For more detailed information about the port from MATLAB to Python, see [docs/numpy-port.md](docs/numpy-port.md).
+For more detailed information about the ports, see:
+- [docs/numpy-port.md](docs/numpy-port.md): Information on the NumPy implementation
+- [docs/jax-port.md](docs/jax-port.md): Information on the JAX implementation
 
 ## License
 
