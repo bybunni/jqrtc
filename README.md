@@ -30,19 +30,39 @@ jqrtc/                      # Repository root
 
 ## Installation
 
-Clone the repository and install in development mode:
+JQRTC uses modern Python packaging with pyproject.toml and hatchling as the build backend.
+
+### Option 1: Install from source
 
 ```bash
 # Clone the repository
 git clone https://github.com/bybunni/jqrtc.git
 cd jqrtc
 
-# Create and activate a virtual environment (optional but recommended)
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# Create and activate a virtual environment (recommended)
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
 # Install in development mode
 pip install -e .
+```
+
+### Option 2: Install using pip
+
+```bash
+# Install directly from GitHub (not yet available on PyPI)
+pip install git+https://github.com/bybunni/jqrtc.git
+```
+
+### Using uv (modern Python package manager)
+
+```bash
+# Create virtual environment
+uv venv
+source .venv/bin/activate
+
+# Install in development mode
+uv pip install -e .
 ```
 
 ## Usage
