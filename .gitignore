@@ -1,9 +1,10 @@
-# Virtual environment
-.venv
-
-# Python egg info
-*.egg-info
-
 # Python
 *.pyc
 __pycache__
+
+# mypy
+.mypy_cache
+
+# uv
+.venv
+uv.lock
