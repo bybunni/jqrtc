@@ -6,7 +6,9 @@ This is a Python/NumPy port of the MATLAB main.m script that demonstrates
 the quadrotor tracking control simulation.
 """
 
+from typing import Tuple
 import numpy as np
+from numpy.typing import NDArray
 import sys
 import os
 
@@ -16,7 +18,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from jqrtc.simulator import Simulator
 from jqrtc.visualization import display_simulation
 
-def main():
+def main() -> None:
     """Run the quadrotor tracking simulation."""
     # Setup simulation parameters
     dt = 0.01

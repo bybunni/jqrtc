@@ -5,9 +5,11 @@ This module implements the equations of motion for a quadrotor and updates
 the state based on the physical model.
 """
 
+from typing import Dict, Any, Optional
 import numpy as np
+from numpy.typing import NDArray
 
-def quadrotor_kinematics(s, omega, para, dt):
+def quadrotor_kinematics(s: NDArray, omega: NDArray, para: Dict[str, float], dt: float) -> NDArray:
     """
     Update the state of the quadrotor based on its current state and motor speeds.
     
@@ -111,7 +113,9 @@ class QuadrotorDynamics:
     This provides an object-oriented interface to the quadrotor kinematics.
     """
     
-    def __init__(self, parameters=None):
+    parameters: Dict[str, float]
+    
+    def __init__(self, parameters: Optional[Dict[str, float]] = None):
         """
         Initialize the quadrotor dynamics with physical parameters.
         
@@ -143,7 +147,7 @@ class QuadrotorDynamics:
         else:
             self.parameters = parameters
     
-    def step(self, state, omega, dt):
+    def step(self, state: NDArray, omega: NDArray, dt: float) -> NDArray:
         """
         Update the quadrotor state for one time step.
         

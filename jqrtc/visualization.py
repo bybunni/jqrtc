@@ -4,12 +4,17 @@ Visualization tools for quadrotor simulations.
 This module provides functions for visualizing quadrotor trajectories and motor speeds.
 """
 
+from typing import Any, List, Optional, Tuple, Union, cast
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+from matplotlib.figure import Figure
 from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.artist as artist
+from numpy.typing import NDArray
 
-def plot_trajectory(position_history, dt, tail_length=-1, speed=200, title=None):
+def plot_trajectory(position_history: NDArray, dt: float, tail_length: int = -1, 
+                  speed: int = 200, title: Optional[str] = None) -> Tuple[Figure, FuncAnimation]:
     """
     Plot the trajectory of the quadrotor(s) in 3D.
     
@@ -51,7 +56,7 @@ def plot_trajectory(position_history, dt, tail_length=-1, speed=200, title=None)
         speed = loop
     
     # Downsample for speed
-    xy_his = []
+    xy_his: List[NDArray[np.float64]] = []
     skip = round(loop / speed)
     if skip > 1:
         # Take every skip-th frame
@@ -69,24 +74,24 @@ def plot_trajectory(position_history, dt, tail_length=-1, speed=200, title=None)
         xy_his = [position_history[:, :, i] for i in range(loop)]
     
     # Convert to numpy array
-    xy_his = np.array(xy_his)
-    new_loop = len(xy_his)
+    xy_his_array: NDArray[np.float64] = np.array(xy_his)
+    new_loop = len(xy_his_array)
     
     # Get axis limits
-    x_min = np.min(position_history[0, :, :])
-    x_max = np.max(position_history[0, :, :])
-    y_min = np.min(position_history[1, :, :])
-    y_max = np.max(position_history[1, :, :])
-    z_min = np.min(position_history[2, :, :])
-    z_max = np.max(position_history[2, :, :])
+    x_min: float = float(np.min(position_history[0, :, :]))
+    x_max: float = float(np.max(position_history[0, :, :]))
+    y_min: float = float(np.min(position_history[1, :, :]))
+    y_max: float = float(np.max(position_history[1, :, :]))
+    z_min: float = float(np.min(position_history[2, :, :]))
+    z_max: float = float(np.max(position_history[2, :, :]))
     
     # Add margins
-    x_width = x_max - x_min
-    x_width = x_width if x_width > 0 else 1
-    y_width = y_max - y_min
-    y_width = y_width if y_width > 0 else 1
-    z_width = z_max - z_min
-    z_width = z_width if z_width > 0 else 1
+    x_width: float = x_max - x_min
+    x_width = x_width if x_width > 0 else 1.0
+    y_width: float = y_max - y_min
+    y_width = y_width if y_width > 0 else 1.0
+    z_width: float = z_max - z_min
+    z_width = z_width if z_width > 0 else 1.0
     
     x_min = x_min - 0.05 * x_width
     x_max = x_max + 0.05 * x_width
@@ -104,17 +109,17 @@ def plot_trajectory(position_history, dt, tail_length=-1, speed=200, title=None)
     ax = fig.add_subplot(111, projection='3d')
     
     # Function to update the plot for each frame
-    def update(frame):
+    def update(frame: int) -> List[artist.Artist]:
         ax.clear()
         
         # Plot initial positions
-        ax.plot(xy_his[0][0, :], xy_his[0][1, :], xy_his[0][2, :], 'kx')
+        ax.plot(xy_his_array[0][0, :], xy_his_array[0][1, :], xy_his_array[0][2, :], 'kx')
         
         # Plot leader
-        ax.plot(xy_his[frame][0, 0], xy_his[frame][1, 0], xy_his[frame][2, 0], 'rp')
+        ax.plot(xy_his_array[frame][0, 0], xy_his_array[frame][1, 0], xy_his_array[frame][2, 0], 'rp')
         
         # Plot quadrotors
-        ax.plot(xy_his[frame][0, 1:], xy_his[frame][1, 1:], xy_his[frame][2, 1:], 'bo', 
+        ax.plot(xy_his_array[frame][0, 1:], xy_his_array[frame][1, 1:], xy_his_array[frame][2, 1:], 'bo', 
                 markerfacecolor='b', markersize=5)
         
         # Plot leader trajectory
@@ -142,15 +147,18 @@ def plot_trajectory(position_history, dt, tail_length=-1, speed=200, title=None)
         # Set axis limits
         ax.set_xlim(x_min, x_max)
         ax.set_ylim(y_min, y_max)
-        ax.set_zlim(z_min, z_max)
+        ax.set_zlim(z_min, z_max)  # type: ignore[attr-defined] # Axes3D has this method
         
         # Set labels
         ax.set_xlabel('x')
         ax.set_ylabel('y')
-        ax.set_zlabel('z')
+        ax.set_zlabel('z')  # type: ignore[attr-defined] # Axes3D has this method
         
         # Set grid
         ax.grid(True)
+        
+        # Return the artists that were added
+        return ax.get_children()
         
     # Create animation
     ani = FuncAnimation(fig, update, frames=new_loop, interval=50, repeat=True)
@@ -158,7 +166,7 @@ def plot_trajectory(position_history, dt, tail_length=-1, speed=200, title=None)
     # Return the figure
     return fig, ani
 
-def plot_motor_speeds(omega_history, dt):
+def plot_motor_speeds(omega_history: NDArray, dt: float) -> Figure:
     """
     Plot the motor speeds over time.
     
@@ -198,7 +206,8 @@ def plot_motor_speeds(omega_history, dt):
     
     return fig
 
-def display_simulation(position_history, omega_history, dt, tail_length=-1, speed=200, save_file=None):
+def display_simulation(position_history: NDArray, omega_history: NDArray, dt: float, 
+                     tail_length: int = -1, speed: int = 200, save_file: Optional[str] = None) -> None:
     """
     Display the complete simulation results.
     

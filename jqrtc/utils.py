@@ -4,9 +4,11 @@ Utility functions for quadrotor simulation.
 This module contains helper functions used across the quadrotor simulation.
 """
 
+from typing import Union
 import numpy as np
+from numpy.typing import NDArray
 
-def angle_delta(p2, p1):
+def angle_delta(p2: float, p1: float) -> float:
     """
     Calculate the angle between two angles on a plane.
     
@@ -38,9 +40,9 @@ def angle_delta(p2, p1):
     dot_prod = np.clip(dot_prod, -1.0, 1.0)
     
     # Return the signed angle
-    return det_sign * np.arccos(dot_prod)
+    return float(det_sign * np.arccos(dot_prod))
 
-def saturate(input_value):
+def saturate(input_value: Union[float, NDArray[np.float64]]) -> Union[float, NDArray[np.float64]]:
     """
     Saturate an input value or array using hyperbolic tangent.
     

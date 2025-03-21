@@ -5,10 +5,12 @@ This module implements controllers for tracking a reference trajectory
 with a quadrotor.
 """
 
+from typing import Dict, Any, Optional
 import numpy as np
+from numpy.typing import NDArray
 from .utils import angle_delta, saturate
 
-def quadrotor_controller(s, xl, vl, psil, para, k1, k2):
+def quadrotor_controller(s: NDArray, xl: NDArray, vl: NDArray, psil: float, para: Dict[str, float], k1: float, k2: float) -> NDArray[np.float64]:
     """
     Compute control inputs to track a reference trajectory.
     
@@ -112,7 +114,11 @@ class TrackingController:
     This provides an object-oriented interface to the tracking controller.
     """
     
-    def __init__(self, parameters=None, position_gain=1, velocity_gain=10):
+    parameters: Dict[str, float]
+    position_gain: float
+    velocity_gain: float
+    
+    def __init__(self, parameters: Optional[Dict[str, float]] = None, position_gain: float = 1, velocity_gain: float = 10):
         """
         Initialize the tracking controller with parameters and gains.
         
@@ -151,7 +157,7 @@ class TrackingController:
         self.position_gain = position_gain
         self.velocity_gain = velocity_gain
         
-    def compute_control(self, state, leader_pos, leader_vel, desired_yaw=0):
+    def compute_control(self, state: NDArray, leader_pos: NDArray, leader_vel: NDArray, desired_yaw: float = 0) -> NDArray:
         """
         Compute control inputs to track a reference trajectory.
         

@@ -4,7 +4,9 @@ Quadrotor simulation engine.
 This module provides a simulator for running quadrotor tracking simulations.
 """
 
+from typing import Dict, List, Optional, Tuple, Union
 import numpy as np
+from numpy.typing import NDArray
 from .kinematics import quadrotor_kinematics
 from .controller import quadrotor_controller
 
@@ -13,7 +15,16 @@ class Simulator:
     A class for simulating quadrotor dynamics and control.
     """
     
-    def __init__(self, parameters=None, dt=0.01, total_time=50, num_quadrotors=1):
+    parameters: Dict[str, float]
+    dt: float
+    total_time: float
+    num_steps: int
+    num_quadrotors: int
+    state_dim: int
+    position_history: Optional[NDArray[np.float64]]
+    omega_history: Optional[NDArray[np.float64]]
+    
+    def __init__(self, parameters: Optional[Dict[str, float]] = None, dt: float = 0.01, total_time: float = 50, num_quadrotors: int = 1):
         """
         Initialize the simulator with parameters.
         
@@ -63,7 +74,7 @@ class Simulator:
         # Dimension of state space
         self.state_dim = 3  # [x, y, z]
         
-    def initialize_state(self, random_init=False, init_range=0.0):
+    def initialize_state(self, random_init: bool = False, init_range: float = 0.0) -> NDArray[np.float64]:
         """
         Initialize the state of the quadrotor(s).
         
@@ -92,7 +103,7 @@ class Simulator:
         
         return s
         
-    def generate_leader_trajectory(self, speed=1.0):
+    def generate_leader_trajectory(self, speed: float = 1.0) -> Tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.float64]]:
         """
         Generate a trajectory for the virtual leader.
         
@@ -151,8 +162,8 @@ class Simulator:
             
         return leader_positions, leader_velocities, leader_accelerations
     
-    def run_simulation(self, initial_state=None, leader_speed=1.0, 
-                      position_gain=1, velocity_gain=10):
+    def run_simulation(self, initial_state: Optional[NDArray[np.float64]] = None, leader_speed: float = 1.0, 
+                      position_gain: float = 1, velocity_gain: float = 10) -> Tuple[NDArray[np.float64], NDArray[np.float64]]:
         """
         Run the full simulation.
         
